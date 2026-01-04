@@ -1,0 +1,8 @@
+@TouringChecker_HostAddress = https://localhost:7009
+
+# GET {{TouringChecker_HostAddress}}/weatherforecast/
+GET {{TouringChecker_HostAddress}}/api/weather/tomorrow?city=Tokyo
+
+Accept: application/json
+
+###

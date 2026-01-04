@@ -1,0 +1,58 @@
+﻿############################
+# OS / Editor
+############################
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.user
+*.suo
+
+############################
+# Visual Studio
+############################
+.vs/
+bin/
+obj/
+TestResults/
+
+############################
+# ASP.NET Core
+############################
+appsettings.Development.json
+appsettings.Local.json
+
+############################
+# Secrets
+############################
+secrets.json
+*.secrets.json
+
+############################
+# Logs
+############################
+*.log
+
+############################
+# Node / React (frontend)
+############################
+frontend/**/node_modules/
+frontend/**/dist/
+frontend/**/build/
+
+############################
+# Environment files
+############################
+.env
+.env.*
+
+############################
+# Coverage
+############################
+coverage/
+
+############################
+# Temporary
+############################
+*.tmp
+*.bak
