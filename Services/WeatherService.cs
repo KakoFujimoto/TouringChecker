@@ -4,7 +4,14 @@ namespace TouringChecker.Services
 {
     public class WeatherService
     {
-        public WeatherTomorrowDto GetTomorrow(string city)
+        private readonly OpenWeatherService _openWeatherService;
+
+        public WeatherService(OpenWeatherService openWeatherService)
+        {
+            _openWeatherService = openWeatherService;
+        }
+
+        public async Task<WeatherTomorrowDto> GetTomorrowAsync(string city)
         {
             return new WeatherTomorrowDto
             {
