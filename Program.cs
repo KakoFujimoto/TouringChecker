@@ -9,6 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<WeatherService>();
+builder.Services.AddHttpClient<OpenWeatherService>();
 
 var app = builder.Build();
 
