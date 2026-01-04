@@ -15,9 +15,9 @@ namespace TouringChecker.Controllers
         }
 
         [HttpGet("tomorrow")]
-        public IActionResult GetTomorrow([FromQuery] string city)
+        public async Task<IActionResult> GetTomorrow([FromQuery] string city)
         {
-            var result = _weatherService.GetTomorrowAsync(city);
+            var result = await _weatherService.GetTomorrowAsync(city);
             return Ok(result);
         }
     }
