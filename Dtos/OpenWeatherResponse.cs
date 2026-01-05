@@ -12,6 +12,7 @@
         public OpenWeatherMain Main { get; set; } = new();
         public List<OpenWeatherWeather> Weather { get; set; } = new();
         public OpenWeatherWind Wind { get; set; } = new();
+        public double Pop { get; set; } = new();
     }
 
     public class OpenWeatherMain
