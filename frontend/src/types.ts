@@ -3,4 +3,6 @@ export type WeatherTomorrow = {
   date: string;
   weather: string;
   temperature: number;
+  canRide: boolean;
+  reason?: string;
 };

@@ -51,6 +51,16 @@ function App() {
           <p>日付: {weather.date}</p>
           <p>天気: {weather.weather}</p>
           <p>気温: {weather.temperature} ℃</p>
+
+          {weather.canRide ? (
+            <p style={{ color: "green", fontWeight: "bold" }}>
+              ツーリング可能
+            </p>
+          ) : (
+            <p style={{ color: "red", fontWeight: "bold" }}>
+              ツーリング不可：{weather.reason}
+            </p>
+          )}
         </div>
       )}
     </div>

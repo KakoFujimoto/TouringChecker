@@ -36,12 +36,32 @@ namespace TouringChecker.Services
                         DateTimeUtils.FromUnixTimeSecondsToLocal(item.Dt).Hour - 12))
                 .First();
 
+            // 判定ルール
+            const double MaxWindSpeed = 8.0;
+            const double MaxRainProbability = 0.3;
+
+            bool canRide = true;
+            string? reason = null;
+
+            if(target.Wind.Speed > MaxWindSpeed)
+            {
+                canRide = false;
+                reason = $"風速が強すぎます({target.Wind.Speed})m/s)";
+            }
+            else if (target.Pop > MaxRainProbability)
+            {
+                canRide = false;
+                reason = $"降水確率が高すぎます({(int)target.Pop * 100})%)";
+            }
+
             return new WeatherTomorrowDto
             {
                 City = city,
                 Date = DateTime.Today.AddDays(1).ToString("yyyy-MM-dd"),
                 Weather = target.Weather.First().Main,
-                Temperature = target.Main.Temp
+                Temperature = target.Main.Temp,
+                CanRide = canRide,
+                Reason = reason
             };
         }
     }
