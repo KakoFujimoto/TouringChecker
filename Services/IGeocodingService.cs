@@ -2,8 +2,8 @@
 
 namespace TouringChecker.Services
 {
-    public class IGeocodingService
+    public interface IGeocodingService
     {
-        ResolveLocation GetByCityName(string cityName);
+        ResolvedLocation GetByCityName(string cityName);
     }
 }

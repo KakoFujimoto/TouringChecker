@@ -17,7 +17,7 @@ namespace TouringChecker.Services
                         ?? throw new InvalidOperationException("API key not found"); 
         }
 
-        public ResolveLocation GetByCityName(string cityName)
+        public ResolvedLocation GetByCityName(string cityName)
         {
             var url =
                $"https://api.openweathermap.org/geo/1.0/direct" +
@@ -38,7 +38,7 @@ namespace TouringChecker.Services
 
             var geo = response[0];
 
-            return new ResolveLocation(
+            return new ResolvedLocation(
                 geo.Lat,
                 geo.Lon,
                 geo.Name

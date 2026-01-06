@@ -1,4 +1,5 @@
-﻿using TouringChecker.Services;
+﻿using System.ComponentModel.DataAnnotations;
+using TouringChecker.Services;
 
 namespace TouringChecker.Domain
 {
@@ -17,9 +18,9 @@ namespace TouringChecker.Domain
                 location.Longitude.HasValue)
             {
                 return new ResolvedLocation(
-                    location.CityName,
                     location.Latitude.Value,
-                    location.Longitude.Value
+                    location.Longitude.Value,
+                    location.CityName
                 );
             }
 
