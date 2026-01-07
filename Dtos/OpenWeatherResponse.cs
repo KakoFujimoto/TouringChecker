@@ -23,6 +23,7 @@
     public class OpenWeatherWeather
     {
         public string Main { get; set; } = "";
+        public string Description { get; set; } = string.Empty;
     }
 
     public class OpenWeatherWind

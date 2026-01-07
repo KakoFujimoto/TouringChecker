@@ -1,4 +1,5 @@
-﻿using TouringChecker.Dtos;
+﻿using TouringChecker.Domain;
+using TouringChecker.Dtos;
 using TouringChecker.Utils;
 
 namespace TouringChecker.Services
@@ -64,5 +65,16 @@ namespace TouringChecker.Services
                 Reason = reason
             };
         }
+
+        public async Task<WeatherTomorrowDto>
+            GetTomorrowAsync(ResolvedLocation resolvedLocation)
+        {
+            var forecast = await _openWeatherService.GetForecastAsync(
+                resolvedLocation.Latitude,
+                resolvedLocation.Longitude);
+
+            return WeatherTomorrowDto.From(forecast);
+        }
+
     }
 }

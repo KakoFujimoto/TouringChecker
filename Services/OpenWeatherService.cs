@@ -29,5 +29,23 @@ namespace TouringChecker.Services
 
             return response!;
         }
+
+        public async Task<OpenWeatherResponse> GetForecastAsync(
+            double latitude,
+            double longitude)
+        {
+            var apiKey = _configuration["OpenWeather:ApiKey"];
+
+            var url =
+                $"https://api.openweathermap.org/data/2.5/forecast" +
+                $"?lat={latitude}&lon={longitude}" +
+                $"&appid={apiKey}&units=metric";
+
+            var response =
+                await _httpClient.GetFromJsonAsync<OpenWeatherResponse>(url);
+
+            return response!;
+        }
+
     }
 }
