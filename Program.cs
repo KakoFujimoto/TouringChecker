@@ -1,3 +1,4 @@
+using TouringChecker.Domain;
 using TouringChecker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddTransient<TouringService>();
+builder.Services.AddTransient<LocationResolver>();
+builder.Services.AddTransient<IGeocodingService, OpenWeatherGeocodingService>();
 builder.Services.AddScoped<WeatherService>();
 builder.Services.AddHttpClient<OpenWeatherService>();
 

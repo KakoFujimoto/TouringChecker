@@ -30,10 +30,10 @@ namespace TouringChecker.Controllers
         }
 
         [HttpPost("check")]
-        public IActionResult Check(
+        public async Task<IActionResult> Check(
             [FromBody] TouringCheckRequest request)
         {
-            var result = _touringService.Check(request);
+            var result = await _touringService.Check(request);
             return Ok(result);
         }
     }

@@ -1,29 +1,54 @@
 import { useState } from "react";
-import type { WeatherTomorrow } from "./types";
+import type { TouringCheckResult } from "./types";
 
 function App() {
-  const [city, setCity] = useState("Tokyo");
-  const [weather, setWeather] = useState<WeatherTomorrow | null>(null);
+  const [currentCity, setCurrentCity] = useState("");
+  const [destinationCity, setDestinationCity] = useState("");
+  const [result, setResult] = useState<TouringCheckResult | null>(null);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchWeather = async () => {
+  const checkTouring = async () => {
     setLoading(true);
     setError(null);
+    setResult(null);
+
+    if (!currentCity && !destinationCity){
+      setError("出発地または目的地のどちらかを入力してください");
+      setLoading(false);
+      return;
+    }
 
     try {
-      const res = await fetch(
-        `https://localhost:7009/api/weather/tomorrow?city=${city}`
-      );
+      const body: {
+        currentLocation?: { cityName: string };
+        destination?: { cityName: string };
+      } = {};
+
+      if (currentCity) {
+        body.currentLocation = { cityName: currentCity };
+      }
+      if (destinationCity) {
+        body.destination = { cityName: destinationCity };
+      }
+
+      const res = await fetch("https://localhost:7009/api/weather/check", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
 
       if (!res.ok) {
         throw new Error(`HTTP error: ${res.status}`);
       }
 
-      const data: WeatherTomorrow = await res.json();
-      setWeather(data);
+      const data: TouringCheckResult = await res.json();
+      setResult(data);
     } catch (e) {
-      setError("天気情報の取得に失敗しました");
+      setError("ツーリング判定に失敗しました");
     } finally {
       setLoading(false);
     }
@@ -33,32 +58,40 @@ function App() {
     <div style={{ padding: "1rem" }}>
       <h1>Touring Checker</h1>
 
-      <div>
+      <div style={{ marginBottom: "0.5rem" }}>
         <input
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          placeholder="都市名"
+          value={currentCity}
+          onChange={(e) => setCurrentCity(e.target.value)}
+          placeholder="出発地（Kobe など）"
         />
-        <button onClick={fetchWeather}>取得</button>
       </div>
 
-      {loading && <p>読み込み中...</p>}
+      <div style={{ marginBottom: "0.5rem" }}>
+        <input
+          value={destinationCity}
+          onChange={(e) => setDestinationCity(e.target.value)}
+          placeholder="目的地（Tokyo など）"
+        />
+      </div>
+
+      <button onClick={checkTouring} disabled={loading}>
+        {loading ? "判定中..." : "明日のツーリングをチェック"}
+      </button>
+
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {weather && (
-        <div>
-          <h2>{weather.city}</h2>
-          <p>日付: {weather.date}</p>
-          <p>天気: {weather.weather}</p>
-          <p>気温: {weather.temperature} ℃</p>
+      {result && (
+        <div style={{ marginTop: "1rem" }}>
+          <h2>{result.cityName ?? "地点"}</h2>
+          <p>天気: {result.weather}</p>
 
-          {weather.canRide ? (
+          {result.isTouringRecommended ? (
             <p style={{ color: "green", fontWeight: "bold" }}>
-              ツーリング可能
+              ツーリング可能 🏍️
             </p>
           ) : (
             <p style={{ color: "red", fontWeight: "bold" }}>
-              ツーリング不可：{weather.reason}
+              ツーリング非推奨 ☔
             </p>
           )}
         </div>

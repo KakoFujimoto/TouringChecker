@@ -6,3 +6,11 @@ export type WeatherTomorrow = {
   canRide: boolean;
   reason?: string;
 };
+
+export type TouringCheckResult = {
+  cityName: string | null;
+  lattitude: number;
+  longitude: number;
+  weather: string;
+  isTouringRecommended: boolean;
+};
