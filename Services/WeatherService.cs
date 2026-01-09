@@ -38,6 +38,7 @@ namespace TouringChecker.Services
                 .First();
 
             // 判定ルール
+            // 外だしを考えた方が良いかも
             const double MaxWindSpeed = 8.0;
             const double MaxRainProbability = 0.3;
 

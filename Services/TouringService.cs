@@ -20,7 +20,7 @@ namespace TouringChecker.Services
         /// <summary>
         /// ツーリング可否を判断する
         /// </summary>
-            public async Task<TouringCheckResult> Check(TouringCheckRequest request)
+        public async Task<TouringCheckResult> Check(TouringCheckRequest request)
         {
             if (request == null)
             {
