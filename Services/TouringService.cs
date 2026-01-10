@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Collections;
 using TouringChecker.Domain;
 using TouringChecker.Dtos;
 
@@ -34,25 +35,27 @@ namespace TouringChecker.Services
                     "現在地または目的地のどちらかを指定してください");
             }
 
-            // 基準となるLocationを決定
-            var baseLocation =
-                request.CurrentLocation ?? request.Destination;
+            // 基準となるLocationsを決定
+            IEnumerable<Location> locations =
+                new[] { request.CurrentLocation, request.Destination }
+                    .OfType<Location>();
 
-            // Locationを解決
-            ResolvedLocation resolvedLocation =
-                _locationResolver.Resolve(baseLocation);
+            // Locationsを解決
+            IEnumerable<ResolvedLocation> resolvedLocations =
+                locations.Select(l=> _locationResolver.Resolve(l));
 
             // 天気取得
-            WeatherTomorrowDto weather =
-                await _weatherService.GetTomorrowAsync(resolvedLocation);
+            var weathers = new List<WeatherTomorrowDto>();
+
+            foreach(var resolved in resolvedLocations)
+            {
+                var weather = await _weatherService.GetTomorrowAsync(resolved);
+                weathers.Add(weather);
+            }
 
             return new TouringCheckResult
             {
-                CityName = resolvedLocation.CityName,
-                Latitude = resolvedLocation.Latitude,
-                Longitude = resolvedLocation.Longitude,
-                Weather = weather.Summary,
-                IsTouringRecommended = weather.IsGoodForTouring
+                IsTouringRecommended = weathers.All(w => w.IsGoodForTouring)
             };
         }
     }
