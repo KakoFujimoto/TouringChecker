@@ -44,10 +44,31 @@ namespace TouringChecker.Services
             IEnumerable<ResolvedLocation> resolvedLocations =
                 locations.Select(l=> _locationResolver.Resolve(l));
 
+            // 中間地点を作る
+            ResolvedLocation? middleLocation = null;
+            if (resolvedLocations.Count() == 2)
+            {
+                var startLocation = resolvedLocations.First();
+                var finishLocation = resolvedLocations.Last();
+
+                middleLocation = new ResolvedLocation
+                (
+                    (startLocation.Latitude + finishLocation.Latitude) / 2,
+                    (startLocation.Longitude + finishLocation.Longitude) / 2,
+                    "Middle"
+                );
+            }
+
+            var resolvedList = resolvedLocations.ToList();
+            if(middleLocation != null)
+            {
+                resolvedList.Add(middleLocation);
+            }
+
             // 天気取得
             var weathers = new List<WeatherTomorrowDto>();
 
-            foreach(var resolved in resolvedLocations)
+            foreach(var resolved in resolvedList)
             {
                 var weather = await _weatherService.GetTomorrowAsync(resolved);
                 weathers.Add(weather);
