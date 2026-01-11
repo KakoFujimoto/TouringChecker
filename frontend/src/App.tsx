@@ -82,9 +82,6 @@ function App() {
 
       {result && (
         <div style={{ marginTop: "1rem" }}>
-          <h2>{result.cityName ?? "地点"}</h2>
-          <p>天気: {result.weather}</p>
-
           {result.isTouringRecommended ? (
             <p style={{ color: "green", fontWeight: "bold" }}>
               ツーリング可能 🏍️
